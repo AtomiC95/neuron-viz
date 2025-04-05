@@ -1,0 +1,51 @@
+services:
+  frontend:
+    # exposes port 8501
+    build:
+      context: .
+      dockerfile: ./docker/frontend/Dockerfile
+    container_name: neuron-viz-frontend
+    networks:
+      - neuron-viz-network
+    depends_on:
+      - api
+
+  api:
+    # exposes port 8000
+    build:
+      context: .
+      dockerfile: ./docker/api/Dockerfile
+    container_name: neuron-viz-api
+    command:
+      [
+        "uvicorn",
+        "neuron_viz.api.main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "--reload",
+        "--reload-include",
+        "neuron_viz/**",
+      ]
+
+    networks:
+      - neuron-viz-network
+
+  caddy:
+    image: caddy:2.9.1-alpine
+    container_name: neuron-viz-caddy
+    ports:
+      - "80:80" # frontend
+      - "443:443" # frontend
+      - "8000:8000" # api
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    networks:
+      - neuron-viz-network
+    depends_on:
+      - frontend
+
+networks:
+  neuron-viz-network:
+    driver: bridge

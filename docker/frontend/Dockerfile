@@ -1,6 +1,5 @@
 FROM node:18-alpine
 
-# Set working directory
 WORKDIR /app
 
 COPY neuron_viz/frontend/package*.json ./

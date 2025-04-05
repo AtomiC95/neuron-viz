@@ -9,6 +9,8 @@ services:
       - neuron-viz-network
     depends_on:
       - api
+    volumes:
+      - ./neuron_viz/frontend:/app
 
   api:
     # exposes port 8000
@@ -31,6 +33,8 @@ services:
 
     networks:
       - neuron-viz-network
+    volumes:
+      - ./neuron_viz/api:/app
 
   caddy:
     image: caddy:2.9.1-alpine
@@ -39,6 +43,7 @@ services:
       - "80:80" # frontend
       - "443:443" # frontend
       - "8000:8000" # api
+      - "3001:3001" # brwowser-sync
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
     networks:

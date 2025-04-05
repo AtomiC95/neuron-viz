@@ -8,7 +8,7 @@ RUN npm install
 
 RUN npm install -g browser-sync
 
-COPY neuron_viz/frontend/ ./
+# Files are mounted from the host machine for development, see docker-compose.yml
 
 EXPOSE 8501
 

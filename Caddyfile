@@ -3,10 +3,10 @@
 }
 
 :80, :443 {
-  reverse_proxy neuron-viz-frontend:8501
+  reverse_proxy frontend:8501
 }
 
 :8000 {
-  reverse_proxy neuron-viz-api:8000
+  reverse_proxy api:8000
 }
 

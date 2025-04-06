@@ -1,8 +1,10 @@
 FROM node:18-alpine
 
+ARG SRC_FOLDER
+
 WORKDIR /app
 
-COPY neuron_viz/frontend/package*.json ./
+COPY ${SRC_FOLDER}/frontend/package*.json ./
 
 RUN npm install
 

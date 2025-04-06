@@ -3,21 +3,25 @@ services:
     # exposes port 8501
     build:
       context: .
+      args:
+        - SRC_FOLDER=${SRC_FOLDER}
       dockerfile: ./docker/frontend/Dockerfile
-    container_name: neuron-viz-frontend
+    container_name: ${SRC_FOLDER}-frontend
     networks:
-      - neuron-viz-network
+      - network
     depends_on:
       - api
     volumes:
-      - ./neuron_viz/frontend:/app
+      - ./${SRC_FOLDER}/frontend:/app
 
   api:
     # exposes port 8000
     build:
       context: .
+      args:
+        - SRC_FOLDER=${SRC_FOLDER}
       dockerfile: ./docker/api/Dockerfile
-    container_name: neuron-viz-api
+    container_name: ${SRC_FOLDER}-api
     command:
       [
         "uvicorn",
@@ -32,13 +36,13 @@ services:
       ]
 
     networks:
-      - neuron-viz-network
+      - network
     volumes:
-      - ./neuron_viz/api:/app
+      - ./${SRC_FOLDER}/api:/app
 
   caddy:
     image: caddy:2.9.1-alpine
-    container_name: neuron-viz-caddy
+    container_name: ${SRC_FOLDER}-caddy
     ports:
       - "80:80" # frontend
       - "443:443" # frontend
@@ -47,10 +51,10 @@ services:
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
     networks:
-      - neuron-viz-network
+      - network
     depends_on:
       - frontend
 
 networks:
-  neuron-viz-network:
+  network:
     driver: bridge

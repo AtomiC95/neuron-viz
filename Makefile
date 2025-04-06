@@ -1,8 +1,8 @@
 .PHONY: update_dependencies help
 
 run_docker:
-	sudo docker compose build
-	sudo docker compose up
+	sudo docker compose --env-file .env build
+	sudo docker compose --env-file .env up
 
 stop_docker:
 	sudo docker compose down

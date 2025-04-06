@@ -25,14 +25,14 @@ services:
     command:
       [
         "uvicorn",
-        "neuron_viz.api.main:app",
+        "${SRC_FOLDER}.api.main:app",
         "--host",
         "0.0.0.0",
         "--port",
         "8000",
         "--reload",
         "--reload-include",
-        "neuron_viz/**",
+        "${SRC_FOLDER}/**",
       ]
 
     networks:
